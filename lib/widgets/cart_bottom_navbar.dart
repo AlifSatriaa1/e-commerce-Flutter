@@ -19,41 +19,33 @@ class CartBottomNavBar extends StatelessWidget {
     return Container(
       height: 110,
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
         boxShadow: [BoxShadow(color: Colors.black26, blurRadius: 8, offset: Offset(0, -3))],
       ),
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            const Text('Total', style: TextStyle(fontSize: 16, color: Colors.black54)),
+            Text('\$${subtotal.toStringAsFixed(2)}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
+          ]),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text('Total', style: TextStyle(fontSize: 16, color: Colors.black54)),
-              Text('\$${subtotal.toStringAsFixed(2)}', style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold)),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Tampilkan discount (jika ada)
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  if (discount > 0)
-                    Text('Discount: -\$${discount.toStringAsFixed(2)}', style: const TextStyle(color: Colors.red)),
-                  Text('Pay: \$${total.toStringAsFixed(2)}', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
-                ],
-              ),
-
-              ElevatedButton(
-                onPressed: onCheckout,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF4C53A5),
+              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+                if (discount > 0)
+                  Text('Discount: -\$${discount.toStringAsFixed(2)}', style: const TextStyle(color: Colors.red)),
+                Text('Pay: \$${total.toStringAsFixed(2)}',
+                    style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+              ]),
+              GestureDetector(
+                onTap: onCheckout,
+                child: Container(
                   padding: const EdgeInsets.symmetric(horizontal: 28, vertical: 12),
-                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                  decoration: BoxDecoration(color: const Color(0xFF4C53A5), borderRadius: BorderRadius.circular(12)),
+                  child: const Text('Checkout', style: TextStyle(fontSize: 16, color: Colors.white)),
                 ),
-                child: const Text('Checkout', style: TextStyle(fontSize: 16)),
               ),
             ],
           ),
