@@ -1,14 +1,14 @@
-import 'package:flutter/material.dart';
+`import 'package:flutter/material.dart';
 
-class MyAccountPage extends StatefulWidget {
+class AccountPage extends StatefulWidget {
   final int cartCount;
-  const MyAccountPage({super.key, this.cartCount = 0});
+  const AccountPage({super.key, this.cartCount = 0});
 
   @override
-  State<MyAccountPage> createState() => _MyAccountPageState();
+  State<AccountPage> createState() => _AccountPageState();
 }
 
-class _MyAccountPageState extends State<MyAccountPage> {
+class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     const primary = Color(0xFF4C53A5);
