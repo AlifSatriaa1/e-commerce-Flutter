@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:curved_navigation_bar/curved_navigation_bar.dart';
+
+// Widgets
 import '../widgets/home_app_bar.dart';
 import '../widgets/categories_widget.dart';
 import '../widgets/items_widget.dart';
+
+// Pages
 import 'cart_page.dart';
 import 'account_page.dart';
-import 'list_chat.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -29,6 +32,7 @@ class _HomePageState extends State<HomePage> {
             _currentIndex = index;
           });
         },
+        physics: const BouncingScrollPhysics(),
         children: const [
           HomePageContent(),
           CartPage(),
@@ -63,13 +67,14 @@ class HomePageContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListView(
+      physics: const BouncingScrollPhysics(),
       children: [
-        // AppBar Custom
+        // Custom AppBar
         const HomeAppBar(),
 
         // Background kotak untuk konten utama
         Container(
-          padding: const EdgeInsets.only(top: 15),
+          padding: const EdgeInsets.only(top: 20, bottom: 20),
           decoration: const BoxDecoration(
             color: Color(0xFFF5F6F8),
             borderRadius: BorderRadius.only(
@@ -81,66 +86,106 @@ class HomePageContent extends StatelessWidget {
             children: [
               // Search Bar
               Container(
-                margin: const EdgeInsets.symmetric(horizontal: 15),
+                margin: const EdgeInsets.symmetric(horizontal: 16),
                 padding: const EdgeInsets.symmetric(horizontal: 15),
                 height: 50,
                 decoration: BoxDecoration(
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black12,
+                      blurRadius: 6,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
                 child: Row(
                   children: [
+                    const Icon(Icons.search, color: Color(0xFF4C53A5)),
+                    const SizedBox(width: 10),
                     Expanded(
                       child: TextFormField(
                         decoration: const InputDecoration(
                           border: InputBorder.none,
-                          hintText: "Search here...",
+                          hintText: "Search products...",
                         ),
                       ),
                     ),
-                    const Icon(Icons.camera_alt,
-                        size: 27, color: Color(0xFF4C53A5)),
+                    IconButton(
+                      icon: const Icon(Icons.tune, color: Color(0xFF4C53A5)),
+                      onPressed: () {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(content: Text("Filter coming soon!")),
+                        );
+                      },
+                    ),
                   ],
                 ),
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 25),
 
-              // Categories
-              Container(
-                alignment: Alignment.centerLeft,
-                margin:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                child: const Text(
-                  "Categories",
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF4C53A5),
-                  ),
-                ),
+              // Categories Section
+              _buildSectionHeader(
+                context,
+                title: "Categories",
+                onSeeAll: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("All categories coming soon!")),
+                  );
+                },
               ),
               const CategoriesWidget(),
 
-              // Best Selling
-              Container(
-                alignment: Alignment.centerLeft,
-                margin:
-                    const EdgeInsets.symmetric(vertical: 20, horizontal: 10),
-                child: const Text(
-                  "Best Selling",
-                  style: TextStyle(
-                    fontSize: 25,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF4C53A5),
-                  ),
-                ),
+              const SizedBox(height: 20),
+
+              // Best Selling Section
+              _buildSectionHeader(
+                context,
+                title: "Best Selling",
+                onSeeAll: () {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(content: Text("All best sellers coming soon!")),
+                  );
+                },
               ),
               const ItemsWidget(),
             ],
           ),
         ),
       ],
+    );
+  }
+
+  Widget _buildSectionHeader(BuildContext context,
+      {required String title, required VoidCallback onSeeAll}) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            title,
+            style: const TextStyle(
+              fontSize: 22,
+              fontWeight: FontWeight.bold,
+              color: Color(0xFF4C53A5),
+            ),
+          ),
+          GestureDetector(
+            onTap: onSeeAll,
+            child: const Text(
+              "See all",
+              style: TextStyle(
+                fontSize: 14,
+                color: Color(0xFF4C53A5),
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
