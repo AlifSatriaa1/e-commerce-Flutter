@@ -14,7 +14,7 @@ class HomeAppBar extends StatelessWidget {
           const Icon(Icons.sort, size: 30, color: Color(0xFF4C53A5)),
           const SizedBox(width: 20),
           const Text(
-            "EcoLocal",
+            "E-commerce",
             style: TextStyle(
               fontSize: 23,
               fontWeight: FontWeight.bold,
@@ -33,7 +33,8 @@ class HomeAppBar extends StatelessWidget {
             ),
             child: InkWell(
               onTap: () {
-                Navigator.pushNamed(context, "/chat");
+                // ✅ Benerin ke route listchat
+                Navigator.pushNamed(context, "/listchat");
               },
               child: const Icon(
                 Icons.message,

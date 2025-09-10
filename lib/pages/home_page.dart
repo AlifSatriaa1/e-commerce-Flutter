@@ -5,6 +5,7 @@ import '../widgets/categories_widget.dart';
 import '../widgets/items_widget.dart';
 import 'cart_page.dart';
 import 'account_page.dart';
+import 'list_chat.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
