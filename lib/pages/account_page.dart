@@ -1,95 +1,156 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:e_commerce/pages/cart_provider.dart';
 
-class AccountPage extends StatefulWidget {
-  final int cartCount;
-  const AccountPage({super.key, this.cartCount = 0});
+class AccountPage extends StatelessWidget {
+  const AccountPage({super.key});
 
-  @override
-  State<AccountPage> createState() => _AccountPageState();
-}
-
-class _AccountPageState extends State<AccountPage> {
   @override
   Widget build(BuildContext context) {
     const primary = Color(0xFF4C53A5);
+    final cartCount = context.watch<CartProvider>().cartItems.length;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('My Account'), centerTitle: true),
+      appBar: AppBar(
+        title: const Text('My Account'),
+        centerTitle: true,
+        actions: [
+          // Cart button dengan badge
+          Stack(
+            alignment: Alignment.topRight,
+            children: [
+              IconButton(
+                icon: const Icon(Icons.shopping_cart_outlined, color: Colors.white),
+                onPressed: () => Navigator.pushNamed(context, '/cart'),
+              ),
+              if (cartCount > 0)
+                Positioned(
+                  right: 8,
+                  top: 8,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: Colors.red,
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      "$cartCount",
+                      style: const TextStyle(color: Colors.white, fontSize: 12),
+                    ),
+                  ),
+                ),
+            ],
+          ),
+        ],
+      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             // Profile header
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  colors: [Color(0xFF4C53A5), Color(0xFF6C5CE7)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                borderRadius: BorderRadius.circular(16),
-                boxShadow: const [
-                  BoxShadow(
-                    color: Colors.black26,
-                    blurRadius: 8,
-                    offset: Offset(0, 4),
+            GestureDetector(
+              onTap: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  const SnackBar(content: Text("Profile tapped")),
+                );
+              },
+              child: Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(20),
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [Color(0xFF4C53A5), Color(0xFF6C5CE7)],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
                   ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  const CircleAvatar(
-                    radius: 40,
-                    backgroundImage: AssetImage('assets/images/profile.png'),
-                  ),
-                  const SizedBox(width: 16),
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Alif Satria',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        SizedBox(height: 6),
-                        Text(
-                          'alifrpl14@gmail.com',
-                          style: TextStyle(color: Colors.white70),
-                        ),
-                      ],
+                  borderRadius: BorderRadius.circular(16),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Colors.black26,
+                      blurRadius: 8,
+                      offset: Offset(0, 4),
                     ),
-                  ),
-                ],
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    const Hero(
+                      tag: "profile_pic",
+                      child: CircleAvatar(
+                        radius: 40,
+                        backgroundImage: AssetImage('assets/images/profile.png'),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    const Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            'Alif Satria',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          SizedBox(height: 6),
+                          Text(
+                            'alifrpl14@gmail.com',
+                            style: TextStyle(color: Colors.white70),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const Icon(Icons.edit, color: Colors.white70),
+                  ],
+                ),
               ),
             ),
 
             const SizedBox(height: 24),
 
-            _menuItem(context, Icons.person_outline, 'Profile', () {}),
+            // Menu items
+            _menuItem(
+              context,
+              Icons.person_outline,
+              'Profile',
+              Colors.blueAccent,
+              () {},
+            ),
             _menuItem(
               context,
               Icons.shopping_cart_outlined,
-              'My Cart (${widget.cartCount})',
+              'My Cart ($cartCount)',
+              Colors.orange,
               () => Navigator.pushNamed(context, '/cart'),
             ),
-            _menuItem(context, Icons.lock_outline, 'Change Password', () {}),
+            _menuItem(
+              context,
+              Icons.lock_outline,
+              'Change Password',
+              Colors.purple,
+              () {},
+            ),
             _menuItem(
               context,
               Icons.notifications_outlined,
               'Notifications',
+              Colors.green,
               () {},
             ),
-            _menuItem(context, Icons.help_outline, 'Help & Support', () {}),
+            _menuItem(
+              context,
+              Icons.help_outline,
+              'Help & Support',
+              Colors.teal,
+              () {},
+            ),
             _menuItem(
               context,
               Icons.logout,
               'Logout',
+              Colors.redAccent,
               () => _showLogoutDialog(context, primary),
             ),
           ],
@@ -102,16 +163,24 @@ class _AccountPageState extends State<AccountPage> {
     BuildContext context,
     IconData icon,
     String title,
+    Color color,
     VoidCallback onTap,
   ) {
     return Card(
       margin: const EdgeInsets.symmetric(vertical: 8),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-      child: ListTile(
-        leading: Icon(icon, color: const Color(0xFF4C53A5)),
-        title: Text(title, style: const TextStyle(fontWeight: FontWeight.w500)),
-        trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+      elevation: 3,
+      child: InkWell(
+        borderRadius: BorderRadius.circular(12),
         onTap: onTap,
+        child: ListTile(
+          leading: CircleAvatar(
+            backgroundColor: color.withOpacity(0.15),
+            child: Icon(icon, color: color),
+          ),
+          title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
+          trailing: const Icon(Icons.arrow_forward_ios, size: 16),
+        ),
       ),
     );
   }
@@ -128,26 +197,21 @@ class _AccountPageState extends State<AccountPage> {
             onPressed: () => Navigator.of(ctx).pop(),
             child: const Text('Cancel'),
           ),
-          GestureDetector(
-            onTap: () {
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: primary,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(10),
+              ),
+            ),
+            onPressed: () {
               Navigator.of(ctx).pop();
               Navigator.pushReplacementNamed(context, '/login');
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text('Logout successful')),
               );
             },
-            child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
-              margin: const EdgeInsets.only(right: 8),
-              decoration: BoxDecoration(
-                color: primary,
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: const Text(
-                'Logout',
-                style: TextStyle(color: Colors.white),
-              ),
-            ),
+            child: const Text('Logout', style: TextStyle(color: Colors.white)),
           ),
         ],
       ),

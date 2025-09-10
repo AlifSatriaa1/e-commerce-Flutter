@@ -9,13 +9,13 @@ class ListChatPage extends StatelessWidget {
     final List<Map<String, dynamic>> chats = [
       {
         "name": "Toko A",
-        "avatar": "assets/images/profile.png",
+        "avatar": "assets/images/profile2.png",
         "lastMessage": "Produk masih ada kak",
         "unread": 2
       },
       {
         "name": "Toko B",
-        "avatar": "assets/images/profile.png",
+        "avatar": "assets/images/profile3.png",
         "lastMessage": "Terima kasih sudah order!",
         "unread": 0
       },
