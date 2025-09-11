@@ -62,7 +62,7 @@ class CartPage extends StatelessWidget {
                   ),
                 ),
 
-                // Bagian Total Harga + Checkout
+                // Bagian Total Harga + Voucher + Checkout
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -78,6 +78,68 @@ class CartPage extends StatelessWidget {
                   ),
                   child: Column(
                     children: [
+                      // Input Voucher
+                      TextField(
+                        decoration: InputDecoration(
+                          hintText: "Enter voucher code",
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          contentPadding:
+                              const EdgeInsets.symmetric(horizontal: 12),
+                        ),
+                        onSubmitted: (value) {
+                          cartProvider.applyVoucher(value.trim());
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            SnackBar(
+                              content: Text(
+                                cartProvider.voucherCode != null
+                                    ? "Voucher applied: $value"
+                                    : "Invalid voucher code",
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 15),
+
+                      // Subtotal
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            "Subtotal:",
+                            style: TextStyle(fontSize: 16),
+                          ),
+                          Text(
+                            "Rp ${cartProvider.subtotal}",
+                            style: const TextStyle(fontSize: 16),
+                          ),
+                        ],
+                      ),
+
+                      // Diskon
+                      if (cartProvider.discount > 0) ...[
+                        const SizedBox(height: 5),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              "Discount:",
+                              style: TextStyle(fontSize: 16, color: Colors.red),
+                            ),
+                            Text(
+                              "- Rp ${cartProvider.discount}",
+                              style: const TextStyle(
+                                  fontSize: 16, color: Colors.red),
+                            ),
+                          ],
+                        ),
+                      ],
+
+                      const Divider(height: 25, thickness: 1),
+
+                      // Total
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
@@ -99,6 +161,8 @@ class CartPage extends StatelessWidget {
                         ],
                       ),
                       const SizedBox(height: 12),
+
+                      // Tombol Checkout
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF4C53A5),

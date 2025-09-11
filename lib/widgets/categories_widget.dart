@@ -1,55 +1,78 @@
 import 'package:flutter/material.dart';
 
-class CategoriesWidget extends StatelessWidget {
+class CategoriesWidget extends StatefulWidget {
   const CategoriesWidget({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final List<String> categories = [
-      "Outfit",
-      "Makanan",
-      "Skincare",
-      "Electronic",
-    ];
+  State<CategoriesWidget> createState() => _CategoriesWidgetState();
+}
 
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: Row(
-        children: List.generate(categories.length, (i) {
-          return Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10),
-            padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(20),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black12,
-                  blurRadius: 5,
-                  offset: const Offset(0, 2),
-                )
-              ],
-            ),
-            child: Row(
-              children: [
-                Image.asset(
-                  "assets/images/banner/${i + 1}.png", // contoh: cat/1.png
-                  width: 40,
-                  height: 40,
+class _CategoriesWidgetState extends State<CategoriesWidget> {
+  final List<String> categories = [
+    "Outfit",
+    "Makanan",
+    "Skincare",
+    "Electronic",
+  ];
+
+  int selectedIndex = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      height: 70,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: categories.length,
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        itemBuilder: (context, i) {
+          final isSelected = i == selectedIndex;
+          return GestureDetector(
+            onTap: () {
+              setState(() => selectedIndex = i);
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(
+                  content: Text("Selected: ${categories[i]}"),
+                  duration: const Duration(seconds: 1),
                 ),
-                const SizedBox(width: 10),
-                Text(
-                  categories[i],
-                  style: const TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                    color: Color(0xFF4C53A5),
+              );
+            },
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 250),
+              margin: const EdgeInsets.symmetric(horizontal: 8),
+              padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 14),
+              decoration: BoxDecoration(
+                color: isSelected ? const Color(0xFF4C53A5) : Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12.withOpacity(0.1),
+                    blurRadius: 6,
+                    offset: const Offset(0, 3),
+                  )
+                ],
+              ),
+              child: Row(
+                children: [
+                  Image.asset(
+                    "assets/images/banner/${i + 1}.png",
+                    width: 38,
+                    height: 38,
                   ),
-                ),
-              ],
+                  const SizedBox(width: 10),
+                  Text(
+                    categories[i],
+                    style: TextStyle(
+                      fontSize: 15,
+                      fontWeight: FontWeight.w600,
+                      color: isSelected ? Colors.white : const Color(0xFF4C53A5),
+                    ),
+                  ),
+                ],
+              ),
             ),
           );
-        }),
+        },
       ),
     );
   }
