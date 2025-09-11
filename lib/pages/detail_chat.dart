@@ -16,6 +16,8 @@ class ChatScreen extends StatefulWidget {
 
 class _ChatScreenState extends State<ChatScreen> {
   final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
   final List<Map<String, dynamic>> messages = [
     {"text": "Halo, ada yang bisa dibantu?", "isMe": false, "time": "11:30"},
     {"text": "Saya mau tanya soal produk", "isMe": true, "time": "11:31"},
@@ -31,13 +33,22 @@ class _ChatScreenState extends State<ChatScreen> {
         });
       });
       _controller.clear();
+
+      // ✅ auto scroll ke bawah
+      Future.delayed(const Duration(milliseconds: 100), () {
+        _scrollController.animateTo(
+          _scrollController.position.maxScrollExtent + 60,
+          duration: const Duration(milliseconds: 300),
+          curve: Curves.easeOut,
+        );
+      });
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // ✅ AppBar dengan avatar + nama toko
+      // ✅ AppBar dengan avatar + nama toko + status
       appBar: AppBar(
         titleSpacing: 0,
         title: Row(
@@ -46,17 +57,28 @@ class _ChatScreenState extends State<ChatScreen> {
               backgroundImage: AssetImage(widget.avatarUrl),
             ),
             const SizedBox(width: 10),
-            Text(
-              widget.contactName,
-              style: const TextStyle(fontWeight: FontWeight.bold),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.contactName,
+                  style: const TextStyle(fontWeight: FontWeight.bold),
+                ),
+                const Text(
+                  "Online",
+                  style: TextStyle(fontSize: 12, color: Colors.green),
+                ),
+              ],
             ),
           ],
         ),
       ),
       body: Column(
         children: [
+          // ✅ List chat
           Expanded(
             child: ListView.builder(
+              controller: _scrollController,
               padding: const EdgeInsets.all(8),
               itemCount: messages.length,
               itemBuilder: (context, index) {
@@ -65,7 +87,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   alignment: msg["isMe"]
                       ? Alignment.centerRight
                       : Alignment.centerLeft,
-                  child: Container(
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 250),
                     margin: const EdgeInsets.symmetric(vertical: 5),
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
@@ -82,6 +105,13 @@ class _ChatScreenState extends State<ChatScreen> {
                             ? const Radius.circular(0)
                             : const Radius.circular(15),
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 4,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -97,8 +127,9 @@ class _ChatScreenState extends State<ChatScreen> {
                           msg["time"],
                           style: TextStyle(
                             fontSize: 10,
-                            color:
-                                msg["isMe"] ? Colors.white70 : Colors.grey[700],
+                            color: msg["isMe"]
+                                ? Colors.white70
+                                : Colors.grey[700],
                           ),
                         ),
                       ],
@@ -108,21 +139,30 @@ class _ChatScreenState extends State<ChatScreen> {
               },
             ),
           ),
-          // ✅ Input area lebih menarik
+
+          // ✅ Input area dengan shadow
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
             decoration: BoxDecoration(
               color: Colors.white,
-              border: Border(
-                top: BorderSide(color: Colors.grey.shade300),
-              ),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.black.withOpacity(0.05),
+                  blurRadius: 6,
+                  offset: const Offset(0, -3),
+                ),
+              ],
             ),
             child: Row(
               children: [
                 IconButton(
                   icon: const Icon(Icons.emoji_emotions_outlined,
                       color: Colors.grey),
-                  onPressed: () {},
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Emoji picker coming soon!")),
+                    );
+                  },
                 ),
                 Expanded(
                   child: TextField(

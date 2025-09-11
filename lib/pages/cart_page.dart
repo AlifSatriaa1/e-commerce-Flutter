@@ -2,8 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:e_commerce/pages/cart_provider.dart';
 
-class CartPage extends StatelessWidget {
+class CartPage extends StatefulWidget {
   const CartPage({super.key});
+
+  @override
+  State<CartPage> createState() => _CartPageState();
+}
+
+class _CartPageState extends State<CartPage> {
+  final TextEditingController voucherController = TextEditingController();
+
+  @override
+  void dispose() {
+    voucherController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -11,7 +24,10 @@ class CartPage extends StatelessWidget {
     final cart = cartProvider.cartItems;
 
     return Scaffold(
-      appBar: AppBar(title: const Text('My Cart')),
+      appBar: AppBar(
+        title: const Text('My Cart'),
+        backgroundColor: const Color(0xFF4C53A5),
+      ),
       body: cart.isEmpty
           ? const Center(
               child: Text(
@@ -21,28 +37,45 @@ class CartPage extends StatelessWidget {
             )
           : Column(
               children: [
-                // List Item di Cart
+                // Daftar produk di cart
                 Expanded(
                   child: ListView.builder(
+                    physics: const BouncingScrollPhysics(),
                     itemCount: cart.length,
                     itemBuilder: (context, index) {
                       final product = cart[index];
                       return Card(
+                        elevation: 2,
                         margin: const EdgeInsets.symmetric(
                             horizontal: 12, vertical: 6),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
                         child: ListTile(
-                          leading: Image.asset(
-                            product["image"] ?? "",
-                            width: 50,
-                            fit: BoxFit.cover,
-                            errorBuilder: (c, e, s) => const Icon(
-                              Icons.image_not_supported,
-                              size: 40,
-                              color: Colors.grey,
+                          leading: ClipRRect(
+                            borderRadius: BorderRadius.circular(8),
+                            child: Image.asset(
+                              product["image"] ?? "",
+                              width: 50,
+                              fit: BoxFit.cover,
+                              errorBuilder: (c, e, s) => const Icon(
+                                Icons.image_not_supported,
+                                size: 40,
+                                color: Colors.grey,
+                              ),
                             ),
                           ),
-                          title: Text(product["name"] ?? "Unknown"),
-                          subtitle: Text("Rp ${product["price"] ?? "0"}"),
+                          title: Text(
+                            product["name"] ?? "Unknown",
+                            style: const TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 15,
+                            ),
+                          ),
+                          subtitle: Text(
+                            "Rp ${product["price"] ?? "0"}",
+                            style: const TextStyle(color: Colors.black54),
+                          ),
                           trailing: IconButton(
                             icon: const Icon(Icons.delete, color: Colors.red),
                             onPressed: () {
@@ -62,7 +95,7 @@ class CartPage extends StatelessWidget {
                   ),
                 ),
 
-                // Bagian Total Harga + Voucher + Checkout
+                // Bagian bawah: voucher + total + checkout
                 Container(
                   padding:
                       const EdgeInsets.symmetric(horizontal: 20, vertical: 15),
@@ -77,43 +110,93 @@ class CartPage extends StatelessWidget {
                     ],
                   ),
                   child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       // Input Voucher
-                      TextField(
-                        decoration: InputDecoration(
-                          hintText: "Enter voucher code",
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          contentPadding:
-                              const EdgeInsets.symmetric(horizontal: 12),
-                        ),
-                        onSubmitted: (value) {
-                          cartProvider.applyVoucher(value.trim());
-                          ScaffoldMessenger.of(context).showSnackBar(
-                            SnackBar(
-                              content: Text(
-                                cartProvider.voucherCode != null
-                                    ? "Voucher applied: $value"
-                                    : "Invalid voucher code",
+                      Row(
+                        children: [
+                          Expanded(
+                            child: TextField(
+                              controller: voucherController,
+                              decoration: InputDecoration(
+                                hintText: "Enter voucher code",
+                                border: OutlineInputBorder(
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                contentPadding: const EdgeInsets.symmetric(
+                                    horizontal: 12),
                               ),
                             ),
-                          );
-                        },
+                          ),
+                          const SizedBox(width: 8),
+                          ElevatedButton(
+                            onPressed: () {
+                              final value = voucherController.text.trim();
+                              if (value.isNotEmpty) {
+                                cartProvider.applyVoucher(value);
+                                ScaffoldMessenger.of(context).showSnackBar(
+                                  SnackBar(
+                                    content: Text(
+                                      cartProvider.voucherCode != null
+                                          ? "Voucher applied: $value"
+                                          : "Invalid voucher code",
+                                    ),
+                                  ),
+                                );
+                              }
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF4C53A5),
+                              foregroundColor: Colors.white, // ✅ teks putih
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 18, vertical: 12),
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                            ),
+                            child: const Text(
+                              "Apply",
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
+
+                      // Voucher aktif ditampilkan
+                      if (cartProvider.voucherCode != null)
+                        Padding(
+                          padding: const EdgeInsets.only(top: 6),
+                          child: Chip(
+                            backgroundColor: Colors.green[100],
+                            label: Text(
+                              "Voucher: ${cartProvider.voucherCode}",
+                              style: const TextStyle(color: Colors.green),
+                            ),
+                          ),
+                        ),
+
                       const SizedBox(height: 15),
 
                       // Subtotal
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
-                            "Subtotal:",
-                            style: TextStyle(fontSize: 16),
+                          const Row(
+                            children: [
+                              Icon(Icons.receipt_long,
+                                  size: 18, color: Colors.grey),
+                              SizedBox(width: 6),
+                              Text("Subtotal:",
+                                  style: TextStyle(fontSize: 16)),
+                            ],
                           ),
                           Text(
                             "Rp ${cartProvider.subtotal}",
-                            style: const TextStyle(fontSize: 16),
+                            style: const TextStyle(
+                                fontSize: 16, fontWeight: FontWeight.w500),
                           ),
                         ],
                       ),
@@ -124,14 +207,22 @@ class CartPage extends StatelessWidget {
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            const Text(
-                              "Discount:",
-                              style: TextStyle(fontSize: 16, color: Colors.red),
+                            const Row(
+                              children: [
+                                Icon(Icons.local_offer,
+                                    size: 18, color: Colors.red),
+                                SizedBox(width: 6),
+                                Text("Discount:",
+                                    style: TextStyle(
+                                        fontSize: 16, color: Colors.red)),
+                              ],
                             ),
                             Text(
                               "- Rp ${cartProvider.discount}",
                               style: const TextStyle(
-                                  fontSize: 16, color: Colors.red),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.red),
                             ),
                           ],
                         ),
@@ -153,19 +244,21 @@ class CartPage extends StatelessWidget {
                           Text(
                             "Rp ${cartProvider.totalPrice}",
                             style: const TextStyle(
-                              fontSize: 18,
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF4C53A5),
                             ),
                           ),
                         ],
                       ),
+
                       const SizedBox(height: 12),
 
                       // Tombol Checkout
-                      ElevatedButton(
+                      ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
                           backgroundColor: const Color(0xFF4C53A5),
+                          foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -186,9 +279,11 @@ class CartPage extends StatelessWidget {
                               ),
                             );
                             cartProvider.clearCart();
+                            voucherController.clear();
                           }
                         },
-                        child: const Text(
+                        icon: const Icon(Icons.payment, color: Colors.white),
+                        label: const Text(
                           "Checkout",
                           style: TextStyle(fontSize: 16, color: Colors.white),
                         ),

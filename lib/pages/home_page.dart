@@ -61,100 +61,137 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-class HomePageContent extends StatelessWidget {
+class HomePageContent extends StatefulWidget {
   const HomePageContent({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return ListView(
-      physics: const BouncingScrollPhysics(),
-      children: [
-        // Custom AppBar
-        const HomeAppBar(),
+  State<HomePageContent> createState() => _HomePageContentState();
+}
 
-        // Background kotak untuk konten utama
-        Container(
-          padding: const EdgeInsets.only(top: 20, bottom: 20),
-          decoration: const BoxDecoration(
-            color: Color(0xFFF5F6F8),
-            borderRadius: BorderRadius.only(
-              topLeft: Radius.circular(35),
-              topRight: Radius.circular(35),
+class _HomePageContentState extends State<HomePageContent> {
+  bool _loading = false;
+
+  Future<void> _refreshContent() async {
+    setState(() => _loading = true);
+    await Future.delayed(const Duration(seconds: 2));
+    setState(() => _loading = false);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return RefreshIndicator(
+      onRefresh: _refreshContent,
+      child: ListView(
+        physics: const BouncingScrollPhysics(),
+        children: [
+          // Custom AppBar
+          const HomeAppBar(),
+
+          // Background kotak untuk konten utama
+          Container(
+            padding: const EdgeInsets.only(top: 20, bottom: 20),
+            decoration: const BoxDecoration(
+              color: Color(0xFFF5F6F8),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(35),
+                topRight: Radius.circular(35),
+              ),
             ),
-          ),
-          child: Column(
-            children: [
-              // Search Bar
-              Container(
-                margin: const EdgeInsets.symmetric(horizontal: 16),
-                padding: const EdgeInsets.symmetric(horizontal: 15),
-                height: 50,
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black12,
-                      blurRadius: 6,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
-                ),
-                child: Row(
-                  children: [
-                    const Icon(Icons.search, color: Color(0xFF4C53A5)),
-                    const SizedBox(width: 10),
-                    Expanded(
-                      child: TextFormField(
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                          hintText: "Search products...",
+            child: Column(
+              children: [
+                // Search Bar
+                Container(
+                  margin: const EdgeInsets.symmetric(horizontal: 16),
+                  padding: const EdgeInsets.symmetric(horizontal: 15),
+                  height: 50,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(30),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black12.withOpacity(0.05),
+                        blurRadius: 6,
+                        offset: const Offset(0, 3),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    children: [
+                      const Icon(Icons.search, color: Color(0xFF4C53A5)),
+                      const SizedBox(width: 10),
+                      Expanded(
+                        child: TextFormField(
+                          decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Search products...",
+                          ),
+                          onFieldSubmitted: (query) {
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              SnackBar(content: Text("Searching for '$query'")),
+                            );
+                          },
                         ),
                       ),
-                    ),
-                    IconButton(
-                      icon: const Icon(Icons.tune, color: Color(0xFF4C53A5)),
-                      onPressed: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Filter coming soon!")),
-                        );
-                      },
-                    ),
-                  ],
+                      IconButton(
+                        icon: const Icon(Icons.tune, color: Color(0xFF4C53A5)),
+                        onPressed: () {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(content: Text("Filter coming soon!")),
+                          );
+                        },
+                      ),
+                    ],
+                  ),
                 ),
-              ),
 
-              const SizedBox(height: 25),
+                const SizedBox(height: 25),
 
-              // Categories Section
-              _buildSectionHeader(
-                context,
-                title: "Categories",
-                onSeeAll: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("All categories coming soon!")),
-                  );
-                },
-              ),
-              const CategoriesWidget(),
+                // Categories Section
+                _buildSectionHeader(
+                  context,
+                  title: "Categories",
+                  onSeeAll: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("All categories coming soon!")),
+                    );
+                  },
+                ),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 500),
+                  child: _loading
+                      ? const Padding(
+                          padding: EdgeInsets.all(20),
+                          child: CircularProgressIndicator(),
+                        )
+                      : const CategoriesWidget(),
+                ),
 
-              const SizedBox(height: 20),
+                const SizedBox(height: 20),
 
-              // Best Selling Section
-              _buildSectionHeader(
-                context,
-                title: "Best Selling",
-                onSeeAll: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("All best sellers coming soon!")),
-                  );
-                },
-              ),
-              const ItemsWidget(),
-            ],
+                // Best Selling Section
+                _buildSectionHeader(
+                  context,
+                  title: "Best Selling",
+                  onSeeAll: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("All best sellers coming soon!")),
+                    );
+                  },
+                ),
+                AnimatedSwitcher(
+                  duration: const Duration(milliseconds: 500),
+                  child: _loading
+                      ? const Padding(
+                          padding: EdgeInsets.all(20),
+                          child: CircularProgressIndicator(),
+                        )
+                      : const ItemsWidget(),
+                ),
+              ],
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 

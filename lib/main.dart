@@ -12,6 +12,9 @@ import 'pages/home_page.dart';
 import 'pages/list_chat.dart';
 import 'pages/detail_chat.dart'; // ChatScreen
 
+// Theme
+import 'theme.dart'; // <--- pakai theme.dart yang kamu buat
+
 void main() {
   runApp(
     MultiProvider(
@@ -26,28 +29,16 @@ void main() {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  static const Color primary = Color(0xFF4C53A5);
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'E-Commerce App',
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        useMaterial3: true,
-        colorScheme: ColorScheme.fromSeed(seedColor: primary),
-        scaffoldBackgroundColor: Colors.grey.shade100,
-        appBarTheme: const AppBarTheme(
-          backgroundColor: primary,
-          elevation: 0,
-          centerTitle: true,
-          titleTextStyle: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 18,
-            color: Colors.white,
-          ),
-        ),
-      ),
+
+      // ✅ Pakai theme dari theme.dart
+      theme: lightTheme,
+      darkTheme: darkTheme,
+      themeMode: ThemeMode.system, // otomatis ikut setting HP
 
       // Halaman awal
       initialRoute: '/login',
