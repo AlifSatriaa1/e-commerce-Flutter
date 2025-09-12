@@ -12,8 +12,6 @@ import 'pages/home_page.dart';
 import 'pages/list_chat.dart';
 import 'pages/detail_chat.dart'; // ChatScreen
 
-// Theme
-import 'theme.dart'; // <--- pakai theme.dart yang kamu buat
 
 void main() {
   runApp(
@@ -34,11 +32,6 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'E-Commerce App',
       debugShowCheckedModeBanner: false,
-
-      // ✅ Pakai theme dari theme.dart
-      theme: lightTheme,
-      darkTheme: darkTheme,
-      themeMode: ThemeMode.system, // otomatis ikut setting HP
 
       // Halaman awal
       initialRoute: '/login',
