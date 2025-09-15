@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const shopeeColor = Color(0xFFFF5722);
+
 class CategoriesWidget extends StatefulWidget {
   const CategoriesWidget({super.key});
 
@@ -42,7 +44,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
               margin: const EdgeInsets.symmetric(horizontal: 8),
               padding: const EdgeInsets.symmetric(vertical: 6, horizontal: 14),
               decoration: BoxDecoration(
-                color: isSelected ? const Color(0xFF4C53A5) : Colors.white,
+                color: isSelected ? shopeeColor : Colors.white,
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
@@ -65,7 +67,7 @@ class _CategoriesWidgetState extends State<CategoriesWidget> {
                     style: TextStyle(
                       fontSize: 15,
                       fontWeight: FontWeight.w600,
-                      color: isSelected ? Colors.white : const Color(0xFF4C53A5),
+                      color: isSelected ? Colors.white : Colors.black87,
                     ),
                   ),
                 ],

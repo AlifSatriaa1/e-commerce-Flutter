@@ -26,7 +26,7 @@ class _CartPageState extends State<CartPage> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Cart'),
-        backgroundColor: const Color(0xFF4C53A5),
+        backgroundColor: Colors.deepOrange, 
       ),
       body: cart.isEmpty
           ? const Center(
@@ -146,8 +146,8 @@ class _CartPageState extends State<CartPage> {
                               }
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF4C53A5),
-                              foregroundColor: Colors.white, // ✅ teks putih
+                              backgroundColor: Colors.deepOrange, 
+                              foregroundColor: Colors.white,
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 18, vertical: 12),
                               shape: RoundedRectangleBorder(
@@ -246,7 +246,7 @@ class _CartPageState extends State<CartPage> {
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF4C53A5),
+                              color: Colors.deepOrange, 
                             ),
                           ),
                         ],
@@ -257,7 +257,7 @@ class _CartPageState extends State<CartPage> {
                       // Tombol Checkout
                       ElevatedButton.icon(
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF4C53A5),
+                          backgroundColor: Colors.deepOrange, 
                           foregroundColor: Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ChatScreen extends StatefulWidget {
   final String contactName;
-  final String avatarUrl; // ✅ biar bisa ada foto profil
+  final String avatarUrl; // foto profil toko/user
 
   const ChatScreen({
     super.key,
@@ -34,7 +34,7 @@ class _ChatScreenState extends State<ChatScreen> {
       });
       _controller.clear();
 
-      // ✅ auto scroll ke bawah
+      // Auto scroll ke bawah
       Future.delayed(const Duration(milliseconds: 100), () {
         _scrollController.animateTo(
           _scrollController.position.maxScrollExtent + 60,
@@ -48,34 +48,40 @@ class _ChatScreenState extends State<ChatScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // ✅ AppBar dengan avatar + nama toko + status
+      //  AppBar 
       appBar: AppBar(
+        backgroundColor: Colors.white,
+        elevation: 1,
         titleSpacing: 0,
+        iconTheme: const IconThemeData(color: Colors.black),
         title: Row(
           children: [
-            CircleAvatar(
-              backgroundImage: AssetImage(widget.avatarUrl),
-            ),
+            CircleAvatar(backgroundImage: AssetImage(widget.avatarUrl)),
             const SizedBox(width: 10),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  widget.contactName,
-                  style: const TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const Text(
-                  "Online",
-                  style: TextStyle(fontSize: 12, color: Colors.green),
-                ),
+                Text(widget.contactName,
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, color: Colors.black)),
+                const Text("Online",
+                    style: TextStyle(fontSize: 12, color: Colors.green)),
               ],
             ),
           ],
         ),
+        actions: const [
+          Icon(Icons.call, color: Colors.black),
+          SizedBox(width: 15),
+          Icon(Icons.videocam, color: Colors.black),
+          SizedBox(width: 10),
+        ],
       ),
+
+      //  Body Chat
       body: Column(
         children: [
-          // ✅ List chat
+          // List chat
           Expanded(
             child: ListView.builder(
               controller: _scrollController,
@@ -93,7 +99,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       color: msg["isMe"]
-                          ? const Color(0xFF4C53A5)
+                          ? const Color(0xFFFF5722) // Shopee orange
                           : Colors.grey[300],
                       borderRadius: BorderRadius.only(
                         topLeft: const Radius.circular(15),
@@ -140,7 +146,7 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
           ),
 
-          // ✅ Input area dengan shadow
+          //  Input Area
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
             decoration: BoxDecoration(
@@ -155,6 +161,14 @@ class _ChatScreenState extends State<ChatScreen> {
             ),
             child: Row(
               children: [
+                IconButton(
+                  icon: const Icon(Icons.add_circle_outline, color: Colors.grey),
+                  onPressed: () {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Attach file coming soon!")),
+                    );
+                  },
+                ),
                 IconButton(
                   icon: const Icon(Icons.emoji_emotions_outlined,
                       color: Colors.grey),
@@ -182,7 +196,7 @@ class _ChatScreenState extends State<ChatScreen> {
                 ),
                 const SizedBox(width: 8),
                 CircleAvatar(
-                  backgroundColor: const Color(0xFF4C53A5),
+                  backgroundColor: const Color(0xFFFF5722), // Shopee orange
                   child: IconButton(
                     icon: const Icon(Icons.send, color: Colors.white),
                     onPressed: _sendMessage,

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:badges/badges.dart' as badges;
 
 class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final int messageCount; // biar dinamis
+  final int messageCount; // jumlah pesan dinamis
   final VoidCallback? onMessageTap;
 
   const HomeAppBar({
@@ -13,12 +13,14 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
 
   @override
   Widget build(BuildContext context) {
+    const shopeeColor = Color(0xFFFF5722);
+
     return AppBar(
       backgroundColor: Colors.white,
       elevation: 4,
       titleSpacing: 0,
       leading: IconButton(
-        icon: const Icon(Icons.sort, size: 28, color: Color(0xFF4C53A5)),
+        icon: const Icon(Icons.sort, size: 28, color: shopeeColor),
         onPressed: () {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text("Menu drawer clicked")),
@@ -30,7 +32,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
         style: TextStyle(
           fontSize: 22,
           fontWeight: FontWeight.bold,
-          color: Color(0xFF4C53A5),
+          color: shopeeColor,
         ),
       ),
       actions: [
@@ -43,10 +45,12 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
               badgeColor: Colors.red,
               padding: EdgeInsets.all(6),
             ),
-            badgeContent: Text(
-              messageCount.toString(),
-              style: const TextStyle(color: Colors.white, fontSize: 12),
-            ),
+            badgeContent: messageCount > 0
+                ? Text(
+                    messageCount.toString(),
+                    style: const TextStyle(color: Colors.white, fontSize: 12),
+                  )
+                : null,
             child: InkWell(
               borderRadius: BorderRadius.circular(30),
               onTap: onMessageTap ??
@@ -56,7 +60,7 @@ class HomeAppBar extends StatelessWidget implements PreferredSizeWidget {
                 child: Icon(
                   Icons.message,
                   size: 28,
-                  color: Color(0xFF4C53A5),
+                  color: shopeeColor,
                 ),
               ),
             ),

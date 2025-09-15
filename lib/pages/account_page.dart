@@ -7,13 +7,14 @@ class AccountPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const primary = Color(0xFF4C53A5);
+    const primary = Colors.orange; 
     final cartCount = context.watch<CartProvider>().cartItems.length;
 
     return Scaffold(
       appBar: AppBar(
         title: const Text('My Account'),
         centerTitle: true,
+        backgroundColor: primary, // App Bar
         actions: [
           // Cart button dengan badge
           Stack(
@@ -59,7 +60,7 @@ class AccountPage extends StatelessWidget {
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFF4C53A5), Color(0xFF6C5CE7)],
+                    colors: [Colors.orange, Colors.deepOrange],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
@@ -199,7 +200,7 @@ class AccountPage extends StatelessWidget {
           ),
           ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: primary,
+              backgroundColor: primary, // 🔥 Tombol oren
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(10),
               ),

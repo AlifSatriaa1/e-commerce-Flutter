@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'detail_chat.dart';
 
+const shopeeOrange = Color(0xFFFF5722);
+
 class ListChatPage extends StatelessWidget {
   const ListChatPage({super.key});
 
@@ -25,13 +27,18 @@ class ListChatPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: const Color(0xFF4C53A5),
+        backgroundColor: shopeeOrange,
         elevation: 0,
-        title: const Text("Messages"),
+        title: const Text(
+          "Pesan",
+          style: TextStyle(
+            fontWeight: FontWeight.bold,
+            fontSize: 18,
+          ),
+        ),
         actions: [
           IconButton(
             onPressed: () {
-              // contoh search (bisa dikembangkan)
               ScaffoldMessenger.of(context).showSnackBar(
                 const SnackBar(content: Text("Search coming soon...")),
               );
@@ -103,9 +110,11 @@ class ListChatPage extends StatelessWidget {
                   if (chat["unread"] > 0)
                     Container(
                       padding: const EdgeInsets.symmetric(
-                          horizontal: 6, vertical: 2),
+                        horizontal: 6,
+                        vertical: 2,
+                      ),
                       decoration: BoxDecoration(
-                        color: Colors.red,
+                        color: shopeeOrange, // warna badge 
                         borderRadius: BorderRadius.circular(12),
                       ),
                       child: Text(

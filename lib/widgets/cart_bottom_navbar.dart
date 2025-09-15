@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const shopeeColor = Color(0xFFFF5722);
+
 class CartBottomNavBar extends StatelessWidget {
   final double subtotal;
   final double discount;
@@ -36,7 +38,7 @@ class CartBottomNavBar extends StatelessWidget {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            // Subtotal & Discount
+            // Subtotal
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -46,10 +48,16 @@ class CartBottomNavBar extends StatelessWidget {
                 ),
                 Text(
                   "Rp ${subtotal.toStringAsFixed(0)}",
-                  style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
+                  style: const TextStyle(
+                    fontSize: 15,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.black87,
+                  ),
                 ),
               ],
             ),
+
+            // Discount
             if (discount > 0) ...[
               const SizedBox(height: 4),
               Row(
@@ -86,7 +94,7 @@ class CartBottomNavBar extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF4C53A5),
+                    color: shopeeColor,
                   ),
                 ),
               ],
@@ -97,20 +105,23 @@ class CartBottomNavBar extends StatelessWidget {
             // Checkout button
             SizedBox(
               width: double.infinity,
-              child: ElevatedButton.icon(
+              child: ElevatedButton(
                 onPressed: onCheckout,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF4C53A5),
+                  backgroundColor: shopeeColor,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(20),
                   ),
-                  elevation: 4,
+                  elevation: 3,
                 ),
-                icon: const Icon(Icons.shopping_bag_outlined, color: Colors.white),
-                label: const Text(
-                  "Proceed to Checkout",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white),
+                child: const Text(
+                  "Checkout Now",
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
@@ -120,4 +131,3 @@ class CartBottomNavBar extends StatelessWidget {
     );
   }
 }
- 

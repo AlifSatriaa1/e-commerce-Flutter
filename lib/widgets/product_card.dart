@@ -16,6 +16,8 @@ class ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const shopeeColor = Color(0xFFFF5722); 
+
     return InkWell(
       borderRadius: BorderRadius.circular(12),
       onTap: () {
@@ -53,7 +55,7 @@ class ProductCard extends StatelessWidget {
                       child: Container(
                         padding: const EdgeInsets.all(6),
                         decoration: const BoxDecoration(
-                          color: Color(0xFF4C53A5),
+                          color: shopeeColor, 
                           shape: BoxShape.circle,
                         ),
                         child: const Icon(Icons.add, color: Colors.white, size: 18),
@@ -73,7 +75,7 @@ class ProductCard extends StatelessWidget {
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 14,
-                      color: Color(0xFF4C53A5),
+                      color: shopeeColor, 
                     ),
                     overflow: TextOverflow.ellipsis,
                   ),
@@ -81,7 +83,7 @@ class ProductCard extends StatelessWidget {
                   Text(
                     "Rp $price",
                     style: const TextStyle(
-                      color: Colors.red,
+                      color: Colors.red, // harga tetap merah biar jelas diskon
                       fontWeight: FontWeight.w600,
                     ),
                   ),
@@ -94,3 +96,4 @@ class ProductCard extends StatelessWidget {
     );
   }
 }
+  

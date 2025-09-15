@@ -39,6 +39,8 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    const shopeeOrange = Color(0xFFFF5722);
+
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       body: SafeArea(
@@ -52,19 +54,19 @@ class _LoginPageState extends State<LoginPage> {
               // Logo / Greeting
               Column(
                 children: const [
-                  Icon(Icons.shopping_bag, size: 80, color: Color(0xFF4C53A5)),
+                  Icon(Icons.shopping_bag, size: 80, color: shopeeOrange),
                   SizedBox(height: 16),
                   Text(
-                    "Welcome Back!",
+                    "Selamat Datang!",
                     style: TextStyle(
                       fontSize: 26,
                       fontWeight: FontWeight.bold,
-                      color: Color(0xFF4C53A5),
+                      color: shopeeOrange,
                     ),
                   ),
                   SizedBox(height: 8),
                   Text(
-                    "Login to continue shopping",
+                    "Login untuk mulai belanja hemat 🎉",
                     style: TextStyle(color: Colors.black54, fontSize: 14),
                   ),
                 ],
@@ -76,7 +78,7 @@ class _LoginPageState extends State<LoginPage> {
               TextField(
                 controller: emailController,
                 decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.email, color: Color(0xFF4C53A5)),
+                  prefixIcon: const Icon(Icons.email, color: shopeeOrange),
                   labelText: "Email",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -93,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                 controller: passwordController,
                 obscureText: _obscurePassword,
                 decoration: InputDecoration(
-                  prefixIcon: const Icon(Icons.lock, color: Color(0xFF4C53A5)),
+                  prefixIcon: const Icon(Icons.lock, color: shopeeOrange),
                   labelText: "Password",
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -118,7 +120,7 @@ class _LoginPageState extends State<LoginPage> {
               // Login Button
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF4C53A5),
+                  backgroundColor: shopeeOrange,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(12),
@@ -141,15 +143,16 @@ class _LoginPageState extends State<LoginPage> {
                   const Text("Belum punya akun? "),
                   GestureDetector(
                     onTap: () {
-                      // TODO: Tambah halaman register
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(content: Text("Fitur Register coming soon!")),
+                        const SnackBar(
+                          content: Text("Fitur Register coming soon!"),
+                        ),
                       );
                     },
                     child: const Text(
                       "Daftar",
                       style: TextStyle(
-                        color: Color(0xFF4C53A5),
+                        color: shopeeOrange,
                         fontWeight: FontWeight.bold,
                       ),
                     ),
@@ -159,9 +162,10 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 12),
               TextButton(
                 onPressed: () {
-                  // TODO: Tambah forgot password
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Fitur Lupa Password coming soon!")),
+                    const SnackBar(
+                      content: Text("Fitur Lupa Password coming soon!"),
+                    ),
                   );
                 },
                 child: const Text(

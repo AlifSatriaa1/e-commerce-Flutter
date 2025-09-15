@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:e_commerce/pages/cart_provider.dart';
 
+const shopeeColor = Color(0xFFFF5722);
+
 class CartAppBar extends StatelessWidget {
   const CartAppBar({super.key});
 
@@ -35,8 +37,7 @@ class CartAppBar extends StatelessWidget {
               onTap: () => Navigator.pop(context),
               child: const Padding(
                 padding: EdgeInsets.all(6.0),
-                child: Icon(Icons.arrow_back,
-                    size: 28, color: Color(0xFF4C53A5)),
+                child: Icon(Icons.arrow_back, size: 28, color: shopeeColor),
               ),
             ),
 
@@ -48,7 +49,7 @@ class CartAppBar extends StatelessWidget {
               style: TextStyle(
                 fontSize: 22,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF4C53A5),
+                color: shopeeColor,
               ),
             ),
 
@@ -58,7 +59,7 @@ class CartAppBar extends StatelessWidget {
             Stack(
               children: [
                 const Icon(Icons.shopping_cart_outlined,
-                    size: 28, color: Color(0xFF4C53A5)),
+                    size: 28, color: shopeeColor),
                 if (cartProvider.cartItems.isNotEmpty)
                   Positioned(
                     right: 0,
@@ -78,6 +79,7 @@ class CartAppBar extends StatelessWidget {
                         style: const TextStyle(
                           color: Colors.white,
                           fontSize: 12,
+                          fontWeight: FontWeight.bold,
                         ),
                         textAlign: TextAlign.center,
                       ),
@@ -89,18 +91,24 @@ class CartAppBar extends StatelessWidget {
 
             // Popup Menu
             PopupMenuButton<String>(
-              icon: const Icon(Icons.more_vert, color: Color(0xFF4C53A5)),
+              icon: const Icon(Icons.more_vert, color: shopeeColor),
               onSelected: (value) {
                 if (value == 'clear') {
                   if (cartProvider.cartItems.isNotEmpty) {
                     cartProvider.clearCart();
                     ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Cart cleared")),
+                      const SnackBar(
+                        content: Text("Cart cleared"),
+                        backgroundColor: shopeeColor,
+                      ),
                     );
                   }
                 } else if (value == 'wishlist') {
                   ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Go to Wishlist (dummy)")),
+                    const SnackBar(
+                      content: Text("Go to Wishlist (dummy)"),
+                      backgroundColor: shopeeColor,
+                    ),
                   );
                 }
               },
@@ -111,7 +119,10 @@ class CartAppBar extends StatelessWidget {
                     children: [
                       Icon(Icons.delete, color: Colors.red),
                       SizedBox(width: 8),
-                      Text("Clear Cart"),
+                      Text(
+                        "Clear Cart",
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
                     ],
                   ),
                 ),
@@ -121,7 +132,10 @@ class CartAppBar extends StatelessWidget {
                     children: [
                       Icon(Icons.favorite, color: Colors.pink),
                       SizedBox(width: 8),
-                      Text("Go to Wishlist"),
+                      Text(
+                        "Go to Wishlist",
+                        style: TextStyle(fontWeight: FontWeight.w500),
+                      ),
                     ],
                   ),
                 ),

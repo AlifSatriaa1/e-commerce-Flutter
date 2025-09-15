@@ -14,6 +14,7 @@ class ItemsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    const shopeeColor = Color(0xFFFF5722);
     return GridView.builder(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       physics: const NeverScrollableScrollPhysics(),
@@ -75,7 +76,7 @@ class ItemsWidget extends StatelessWidget {
                         product["name"]!,
                         style: const TextStyle(
                           fontSize: 16,
-                          color: Color(0xFF4C53A5),
+                          color: shopeeColor,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -87,7 +88,7 @@ class ItemsWidget extends StatelessWidget {
                             "Rp ${product["price"]}",
                             style: const TextStyle(
                               fontSize: 14,
-                              color: Color(0xFF4C53A5),
+                              color: shopeeColor, 
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -107,7 +108,7 @@ class ItemsWidget extends StatelessWidget {
                             child: Container(
                               padding: const EdgeInsets.all(6),
                               decoration: const BoxDecoration(
-                                color: Color(0xFF4C53A5),
+                                color: shopeeColor, 
                                 shape: BoxShape.circle,
                               ),
                               child: const Icon(Icons.add, color: Colors.white, size: 18),

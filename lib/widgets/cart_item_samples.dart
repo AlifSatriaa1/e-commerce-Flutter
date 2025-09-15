@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+const shopeeColor = Color(0xFFFF5722);
+
 class CartItemSamples extends StatelessWidget {
   final List<Map<String, dynamic>> items;
   final void Function(int index) onIncrease;
@@ -17,7 +19,8 @@ class CartItemSamples extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     // Filter item visible
-    final visibleItems = items.asMap().entries.where((e) => e.value['visible'] == true).toList();
+    final visibleItems =
+        items.asMap().entries.where((e) => e.value['visible'] == true).toList();
 
     if (visibleItems.isEmpty) {
       return const Padding(
@@ -25,7 +28,11 @@ class CartItemSamples extends StatelessWidget {
         child: Center(
           child: Text(
             'Your cart is empty 🛒',
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.w500, color: Colors.grey),
+            style: TextStyle(
+              fontSize: 16,
+              fontWeight: FontWeight.w500,
+              color: Colors.grey,
+            ),
           ),
         ),
       );
@@ -76,7 +83,9 @@ class CartItemSamples extends StatelessWidget {
                             width: 90,
                             height: 90,
                             color: Colors.grey.shade200,
-                            child: const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                            child: const Center(
+                              child: CircularProgressIndicator(strokeWidth: 2),
+                            ),
                           );
                         },
                         errorBuilder: (context, err, st) {
@@ -84,7 +93,10 @@ class CartItemSamples extends StatelessWidget {
                             width: 90,
                             height: 90,
                             color: Colors.grey.shade300,
-                            child: const Icon(Icons.image_not_supported, color: Colors.white70),
+                            child: const Icon(
+                              Icons.image_not_supported,
+                              color: Colors.white70,
+                            ),
                           );
                         },
                       );
@@ -102,7 +114,10 @@ class CartItemSamples extends StatelessWidget {
                   children: [
                     Text(
                       item['name'] ?? 'No name',
-                      style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                     ),
@@ -111,8 +126,8 @@ class CartItemSamples extends StatelessWidget {
                       "Rp ${(item['price'] as double).toStringAsFixed(0)}",
                       style: const TextStyle(
                         fontSize: 15,
-                        fontWeight: FontWeight.w600,
-                        color: Color(0xFF4C53A5),
+                        fontWeight: FontWeight.w700,
+                        color: shopeeColor,
                       ),
                     ),
                     const Spacer(),
@@ -122,7 +137,10 @@ class CartItemSamples extends StatelessWidget {
                         // Delete
                         IconButton(
                           onPressed: () => onDelete(index),
-                          icon: const Icon(Icons.delete_outline, color: Colors.redAccent),
+                          icon: const Icon(
+                            Icons.delete_outline,
+                            color: Colors.redAccent,
+                          ),
                           tooltip: "Remove item",
                         ),
                         // Qty control
@@ -133,10 +151,14 @@ class CartItemSamples extends StatelessWidget {
                               onTap: () => onDecrease(index),
                             ),
                             Padding(
-                              padding: const EdgeInsets.symmetric(horizontal: 8),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 8),
                               child: Text(
                                 '${item['qty']}',
-                                style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+                                style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                ),
                               ),
                             ),
                             _qtyButton(
@@ -163,7 +185,7 @@ class CartItemSamples extends StatelessWidget {
       borderRadius: BorderRadius.circular(20),
       child: Padding(
         padding: const EdgeInsets.all(4),
-        child: Icon(icon, size: 22, color: const Color(0xFF4C53A5)),
+        child: Icon(icon, size: 22, color: shopeeColor),
       ),
     );
   }

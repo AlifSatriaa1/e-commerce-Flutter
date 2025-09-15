@@ -21,6 +21,9 @@ class _HomePageState extends State<HomePage> {
   int _currentIndex = 0;
   final PageController _pageController = PageController();
 
+  
+  static const Color shopeeOrange = Color(0xFFF94D00);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +46,7 @@ class _HomePageState extends State<HomePage> {
         index: _currentIndex,
         height: 60,
         backgroundColor: Colors.transparent,
-        color: const Color(0xFF4C53A5),
+        color: shopeeOrange,
         animationDuration: const Duration(milliseconds: 300),
         items: const [
           Icon(Icons.home, size: 30, color: Colors.white),
@@ -70,6 +73,8 @@ class HomePageContent extends StatefulWidget {
 
 class _HomePageContentState extends State<HomePageContent> {
   bool _loading = false;
+
+  static const Color shopeeOrange = Color(0xFFF94D00);
 
   Future<void> _refreshContent() async {
     setState(() => _loading = true);
@@ -117,7 +122,7 @@ class _HomePageContentState extends State<HomePageContent> {
                   ),
                   child: Row(
                     children: [
-                      const Icon(Icons.search, color: Color(0xFF4C53A5)),
+                      const Icon(Icons.search, color: shopeeOrange),
                       const SizedBox(width: 10),
                       Expanded(
                         child: TextFormField(
@@ -133,7 +138,7 @@ class _HomePageContentState extends State<HomePageContent> {
                         ),
                       ),
                       IconButton(
-                        icon: const Icon(Icons.tune, color: Color(0xFF4C53A5)),
+                        icon: const Icon(Icons.tune, color: shopeeOrange),
                         onPressed: () {
                           ScaffoldMessenger.of(context).showSnackBar(
                             const SnackBar(content: Text("Filter coming soon!")),
@@ -207,7 +212,7 @@ class _HomePageContentState extends State<HomePageContent> {
             style: const TextStyle(
               fontSize: 22,
               fontWeight: FontWeight.bold,
-              color: Color(0xFF4C53A5),
+              color: shopeeOrange,
             ),
           ),
           GestureDetector(
@@ -216,7 +221,7 @@ class _HomePageContentState extends State<HomePageContent> {
               "See all",
               style: TextStyle(
                 fontSize: 14,
-                color: Color(0xFF4C53A5),
+                color: shopeeOrange,
                 fontWeight: FontWeight.w500,
               ),
             ),
